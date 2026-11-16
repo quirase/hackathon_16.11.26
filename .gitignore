@@ -1,4 +1,12 @@
 # Byte-compiled / optimized / DLL files
+.test_tmp/
+debug_report.json
+build-report.json
+exported_dictionaries/
+words_data/*.csv
+words_data/*.json
+words_data/*_README.md
+words_data/*.py.txt
 __pycache__/
 *.py[codz]
 *$py.class

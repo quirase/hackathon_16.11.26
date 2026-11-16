@@ -1,0 +1,105 @@
+{
+  "samples": [
+    {
+      "file": "erjMgola4fQ_A1.txt",
+      "approximate_label": "A1",
+      "prediction": "A2",
+      "sha256": "b451578d2754f1b78f9cac2b66dbf9c9fb2e0f9ef162101522dc1dc1134b6bdc",
+      "absolute_band_error": 1,
+      "coverage": 0.9944,
+      "tokens": 535,
+      "lexical_score": 2.0,
+      "grammar_score": 1.0
+    },
+    {
+      "file": "gOMypAhVaXE_A2.txt",
+      "approximate_label": "A2",
+      "prediction": "B1",
+      "sha256": "8d5bb93457bc0c2ed8c027c26fcf6fe103aba17d3ff8aadbc94da6ef4ff38cb4",
+      "absolute_band_error": 1,
+      "coverage": 0.9915,
+      "tokens": 593,
+      "lexical_score": 3.0,
+      "grammar_score": 1.113
+    },
+    {
+      "file": "ME7CECwNks4_B1.txt",
+      "approximate_label": "B1",
+      "prediction": "B2",
+      "sha256": "cdf9a74b320f386e3b1303d6ee8909f635636903e6fe2f7124ca6cdfb625b688",
+      "absolute_band_error": 1,
+      "coverage": 0.9922,
+      "tokens": 782,
+      "lexical_score": 4.0,
+      "grammar_score": 1.259
+    },
+    {
+      "file": "OX-XEa50fFw_B2.txt",
+      "approximate_label": "B2",
+      "prediction": "A2",
+      "sha256": "2f2a8ca5959b382e8f60c255f462a6fbfabdf0064e376a207c9659eb5a4ded22",
+      "absolute_band_error": 2,
+      "coverage": 0.9945,
+      "tokens": 730,
+      "lexical_score": 2.0,
+      "grammar_score": 1.137
+    },
+    {
+      "file": "ozi4FPic4QI_B2.txt",
+      "approximate_label": "B2",
+      "prediction": "B1",
+      "sha256": "cd6e11e7a7cd9ddf906034a3bea7d3061c13e8d2537dc383c13a1e6042d1311c",
+      "absolute_band_error": 1,
+      "coverage": 0.9916,
+      "tokens": 837,
+      "lexical_score": 3.0,
+      "grammar_score": 1.0
+    },
+    {
+      "file": "tnvj7e1n5xk_B1.txt",
+      "approximate_label": "B1",
+      "prediction": "B1",
+      "sha256": "776c1bbbec2e15af2cb8b2beeec332e4e9ad94107cadcafb86eda1a5586eb15d",
+      "absolute_band_error": 0,
+      "coverage": 0.9894,
+      "tokens": 856,
+      "lexical_score": 3.0,
+      "grammar_score": 1.118
+    },
+    {
+      "file": "uVGV8LG3HHM_A1.txt",
+      "approximate_label": "A1",
+      "prediction": "A2",
+      "sha256": "377ab16e8d1d997a15a42edfbfb410fc9b52aab85f8a1ebee3c1544f58135309",
+      "absolute_band_error": 1,
+      "coverage": 0.991,
+      "tokens": 792,
+      "lexical_score": 2.0,
+      "grammar_score": 1.0
+    },
+    {
+      "file": "V7bOxiNM3kc_C1.txt",
+      "approximate_label": "C1",
+      "prediction": "B1",
+      "sha256": "ccd7e91b95f3b950f3622b92098e43a97f341b0d39928a434dd56016ef38f4e6",
+      "absolute_band_error": 2,
+      "coverage": 0.9837,
+      "tokens": 736,
+      "lexical_score": 3.0,
+      "grammar_score": 1.0
+    }
+  ],
+  "evaluated": 8,
+  "scoring_config": {
+    "lexical_support": 3,
+    "lexical_tail_share": 0.1,
+    "grammar_support": 3,
+    "grammar_full_density": 6.0,
+    "grammar_weight": 0.75,
+    "include_automatic": false
+  },
+  "dictionary_terms": 159015,
+  "mean_absolute_band_error": 1.125,
+  "within_one_band": 0.75,
+  "note": "Approximate labels, small calibration set, no held-out validation; not an accuracy guarantee."
+}

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transcript-cefr"
+version = "0.1.0"
+description = "Explainable approximate CEFR analysis of English transcripts"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dataframe = ["pandas>=2"]
+
+[project.scripts]
+cefr = "cefr_analyzer.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cefr_analyzer*"]
+
+[tool.setuptools.package-data]
+cefr_analyzer = ["data/*.json", "data/*.gz", "data/*.csv"]

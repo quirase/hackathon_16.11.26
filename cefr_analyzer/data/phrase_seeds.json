@@ -1,0 +1,5 @@
+[
+  {"term": "turn out", "level": "B2", "source": "cambridge_turn_out", "separable": false, "url": "https://dictionary.cambridge.org/dictionary/learner-english/turn-out"},
+  {"term": "turn down", "level": "B2", "source": "cambridge_turn_down", "separable": true, "max_gap": 4, "url": "https://dictionary.cambridge.org/dictionary/english/turn-down?topic=refusing-and-rejecting"},
+  {"term": "give up", "level": "B1", "source": "cambridge_give_up", "separable": true, "max_gap": 4, "url": "https://dictionary.cambridge.org/dictionary/essential-british-english/give-up-something"}
+]
