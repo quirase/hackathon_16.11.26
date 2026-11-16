@@ -1,25 +1,3 @@
-"""
-yt_transcript_parser.py
-
-Turns a YouTube URL into a dictionary with two lists of the same length:
-    {"word":      ["hello", "there", ...],
-     "time_code": [0.0, 0.52, ...]}
-    word       - every word of the transcript, in order
-    time_code  - the time (in seconds) when the word at the same position is spoken
-
-How it works:
-    1. Try the youtube-transcript-api library first.
-    2. If that fails (for example YouTube blocks our IP), use SerpApi instead.
-       We have several SerpApi keys and take turns using them (key rotation).
-
-Setup:
-    pip install youtube-transcript-api serpapi
-    (install "serpapi", NOT "google-search-results" - the two clash)
-
-    Put the SerpApi keys in an environment variable, separated by commas:
-        Mac/Linux:  export SERPAPI_KEYS="key1,key2,key3,key4,key5"
-        Windows:    set SERPAPI_KEYS=key1,key2,key3,key4,key5
-"""
 
 """
 yt_transcript_parser.py
@@ -47,6 +25,7 @@ Setup:
 import os
 import re
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
 import serpapi
 from youtube_transcript_api import (
@@ -61,11 +40,13 @@ from youtube_transcript_api import (
 # Settings and key rotation
 # ---------------------------------------------------------------------------
 
-# Read the keys from the environment: "a,b,c" -> ["a", "b", "c"]
 SERPAPI_KEYS = []
+load_dotenv()
+
 for key in os.environ.get("SERPAPI_KEYS", "").split(","):
     if key.strip() != "":
         SERPAPI_KEYS.append(key.strip())
+
 
 # If a key stops working (no searches left, rate limit...) we skip it for 1 hour.
 COOLDOWN = timedelta(hours=1)
