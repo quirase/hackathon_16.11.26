@@ -269,7 +269,7 @@ python -m cefr_analyzer analyze --text "That's disappointing."
 python -m cefr_analyzer analyze --file transcript.txt --ignore Alice --ignore "New York"
 python -m cefr_analyzer analyze --words examples/words.csv --output result.json --json
 python -m cefr_analyzer analyze --file transcript.txt --include-automatic
-python -m cefr_analyzer calibrate --directory calibration_data --output calibration_report.json
+python -m cefr_analyzer calibrate --directory calibration_data --output reports/calibration_report.json
 python -m examples.integration
 ```
 
@@ -291,7 +291,7 @@ CEFR і частка похибок не більше одного ступен�
 робочого аналізатора, у коді немає перевірок назв відео, самоназви рівня
 або спеціальних правил для їхнього змісту.
 
-У [calibration_report.json](../calibration_report.json) збережено фактичні
+У [calibration_report.json](../reports/calibration_report.json) збережено фактичні
 результати. Ця мала добірка не є незалежним тестовим набором.
 Наразі аналізатор занижує частину B2–C1 і завищує окремі A1–A2.
 Змістова лексика, мінімальні рівні між значеннями та обмежене покриття

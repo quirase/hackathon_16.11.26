@@ -30,4 +30,4 @@
 
 Обмеження: C1–C2 все ще переважно оцінюються як B2. Їх не можна чесно підняти до C1/C2 лише за міткою файла: для цього бракує надійних ознак у поточному аналізі. Один попередній B1-текст (tnvj7e1n5xk) підвищився з B1 до B2 — це регресія відносно його приблизної мітки.
 
-Повне порівняння: [calibration_comparison.json](../calibration_comparison.json). Поточний звіт: [calibration_report.json](../calibration_report.json).
+Повне порівняння: [calibration_comparison.json](calibration_comparison.json). Поточний звіт: [calibration_report.json](calibration_report.json).

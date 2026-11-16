@@ -58,8 +58,8 @@ print(result["unknown_words"])
 - [Документація: API, алгоритм, JSON і обмеження](docs/how-it-works.md)
 - [Зафіксований контракт інтеграції v1.0](docs/api-contract.md)
 - [Джерела, схеми даних та ліцензійні примітки](docs/sources.md)
-- [Результати перевірки на 19 приблизно розмічених текстах](calibration_report.json)
-- [Аналіз нових синтетичних текстів](docs/synthetic-results.md)
+- [Результати перевірки на 19 приблизно розмічених текстах](reports/calibration_report.json)
+- [Аналіз нових синтетичних текстів](reports/synthetic-results.md)
 - [Приклад інтеграції з таймкодами](examples/integration.py)
 - [YouTube-парсер та наскрізна інтеграція](docs/parser-integration.md)
 
@@ -68,7 +68,7 @@ print(result["unknown_words"])
 ```bash
 python -m cefr_analyzer prepare-data --download
 python -m cefr_analyzer export-dictionaries --output-dir exported_dictionaries
-python -m cefr_analyzer calibrate --output calibration_report.json
+python -m cefr_analyzer calibrate --output reports/calibration_report.json
 ```
 
 Експорт створює окремі каталоги джерел і файли `A1.json` … `C2.json` у кожному.
