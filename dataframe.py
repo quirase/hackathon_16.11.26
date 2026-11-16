@@ -74,81 +74,29 @@ def build_word_rows(report: Dict[str, Any]) -> List[Dict[str, Any]]:
     return rows
 
 
-def build_df(report: Optional[Dict[str, Any]] = None, rows: Optional[List[Dict[str, Any]]] = None):
-    """
-    Convert analysis report rows into a pandas DataFrame (if pandas is installed),
-    or return the structured rows.
-    """
-    if rows is None:
-        if report is None:
-            raise ValueError("Either 'report' or 'rows' must be provided.")
-        rows = build_word_rows(report)
-
-    try:
-        import pandas as pd
-
-        return pd.DataFrame(rows)
-    except ImportError:
-        return rows
-
-
 def build_csv(
     report: Optional[Dict[str, Any]] = None,
     rows: Optional[List[Dict[str, Any]]] = None,
     filepath: Optional[str] = None,
 ) -> str:
-    """
-    Export rows to CSV format (works with or without pandas).
-    """
+    """Export rows to CSV format using stdlib csv."""
+    import csv
+    import io
+
     if rows is None:
         if report is None:
             raise ValueError("Either 'report' or 'rows' must be provided.")
         rows = build_word_rows(report)
 
-    try:
-        import pandas as pd
+    if not rows:
+        return ""
 
-        df = pd.DataFrame(rows)
-        if filepath:
-            df.to_csv(filepath, index=False)
-        return df.to_csv(index=False)
-    except ImportError:
-        import csv
-        import io
-
-        if not rows:
-            return ""
-
-        fieldnames = list(rows[0].keys())
-        output = io.StringIO()
-        writer = csv.DictWriter(output, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-        content = output.getvalue()
-        if filepath:
-            with open(filepath, "w", encoding="utf-8", newline="") as f:
-                f.write(content)
-        return content
-
-
-if __name__ == "__main__":
-    from transcript_parser import make_word_dict
-
-    sample_segments = [
-        {"text": "She turned it down.", "start": 0.0, "end": 1.0},
-        {"text": "We need to analyze this data.", "start": 1.2, "end": 3.0},
-    ]
-    w_dict = make_word_dict(sample_segments)
-    txt = " ".join(w_dict["word"])
-
-    rep = analyze_transcript(text=txt, word_dict=w_dict)
-    print("Assessment:", rep.get("assessment"))
-    print("Word levels:", rep.get("word_levels"))
-
-    table = build_df(rep)
-    print("\nTable preview (rows or df):")
-    print(table)
-
-    csv_data = build_csv(rep)
-    print("\nCSV Output preview:")
-    print(csv_data)
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=list(rows[0].keys()))
+    writer.writeheader()
+    writer.writerows(rows)
+    content = output.getvalue()
+    if filepath:
+        with open(filepath, "w", encoding="utf-8", newline="") as f:
+            f.write(content)
+    return content

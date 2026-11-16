@@ -1,9 +1,10 @@
-import { Bookmark, History } from 'lucide-react';
+import { Bookmark, History, LayoutGrid } from 'lucide-react';
 import { isMockMode } from '../api/analyzer';
 
 interface HeaderProps {
   historyCount: number;
   wordlistCount: number;
+  onOpenWall: () => void;
   onOpenHistory: () => void;
   onOpenWordlist: () => void;
   onResetHome: () => void;
@@ -12,6 +13,7 @@ interface HeaderProps {
 export function Header({
   historyCount,
   wordlistCount,
+  onOpenWall,
   onOpenHistory,
   onOpenWordlist,
   onResetHome,
@@ -41,6 +43,11 @@ export function Header({
             <span className={`status-dot ${mock ? '' : 'status-dot--live'}`} aria-hidden="true" />
             <span>{mock ? 'Mock Preview' : 'API Live'}</span>
           </div>
+
+          <button type="button" className="history-trigger" onClick={onOpenWall}>
+            <LayoutGrid size={14} strokeWidth={1.9} aria-hidden="true" />
+            <span>Video Wall</span>
+          </button>
 
           <button type="button" className="history-trigger" onClick={onOpenWordlist}>
             <Bookmark size={14} strokeWidth={1.9} aria-hidden="true" />

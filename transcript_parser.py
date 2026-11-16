@@ -50,13 +50,10 @@ class TranscriptLanguageError(RuntimeError):
 # Settings and key rotation
 # ---------------------------------------------------------------------------
 
-SERPAPI_KEYS = []
 if load_dotenv is not None:
     load_dotenv()
 
-for key in os.environ.get("SERPAPI_KEYS", "").split(","):
-    if key.strip() != "":
-        SERPAPI_KEYS.append(key.strip())
+SERPAPI_KEYS = [k.strip() for k in os.environ.get("SERPAPI_KEYS", "").split(",") if k.strip()]
 
 
 # If a key stops working (no searches left, rate limit...) we skip it for 1 hour.
@@ -137,7 +134,15 @@ def get_segments_from_youtube(video_id, language):
     """Get the transcript using youtube-transcript-api."""
     from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled, VideoUnavailable
 
-    api = YouTubeTranscriptApi()
+    proxy_url = os.environ.get("YT_PROXY_URL", "").strip()
+    if proxy_url:
+        from youtube_transcript_api.proxies import GenericProxyConfig
+
+        api = YouTubeTranscriptApi(
+            proxy_config=GenericProxyConfig(http_url=proxy_url, https_url=proxy_url)
+        )
+    else:
+        api = YouTubeTranscriptApi()
 
     try:
         fetched = api.fetch(video_id, languages=[language])
@@ -183,10 +188,12 @@ def get_segments_from_serpapi(video_id, language):
         if "error" in results:
             raise RuntimeError("SerpApi error: " + str(results["error"]))
 
-        selected = [item for item in results.get("available_transcripts", []) if item.get("selected")]
-        if len(selected) != 1:
-            raise TranscriptLanguageError("SerpApi did not identify the selected transcript language.")
-        check_language(selected[0].get("language_code"), language)
+        available = results.get("available_transcripts") or []
+        if available:
+            selected = [item for item in available if item.get("selected")]
+            if len(selected) != 1:
+                raise TranscriptLanguageError("SerpApi did not identify the selected transcript language.")
+            check_language(selected[0].get("language_code"), language)
 
         # SerpApi gives times in milliseconds, so divide by 1000 to get seconds
         segments = []
@@ -220,11 +227,6 @@ def clean_text(text):
     text = text.replace("’", "'").replace("‘", "'")
     text = text.replace("“", '"').replace("”", '"')
     text = text.replace("…", "...")
-    text = text.replace("&#39;", "'")
-    text = text.replace("&quot;", '"')
-    text = text.replace("&lt;", "<")
-    text = text.replace("&gt;", ">")
-    text = text.replace("&amp;", "&")  # always last
     return text
 
 
@@ -308,9 +310,14 @@ def get_transcript(url, language="en"):
         # The video has no transcript, so SerpApi can't help either
         raise
     except Exception as error:
-        # Probably YouTube blocked us, so use SerpApi instead
-        LOGGER.warning("YouTube provider failed; trying SerpApi.")
-        segments = get_segments_from_serpapi(video_id, language)
+        # Probably YouTube blocked us, so try SerpApi if configured
+        LOGGER.warning("YouTube provider failed (%s); trying SerpApi.", type(error).__name__)
+        try:
+            segments = get_segments_from_serpapi(video_id, language)
+        except RuntimeError as serp_error:
+            if "No SerpApi keys found" in str(serp_error):
+                raise RuntimeError(f"youtube-transcript-api failed: {error}") from error
+            raise
 
     result = make_word_dict(segments)
     if len(result["word"]) == 0:

@@ -13,6 +13,7 @@ dependencies = []
 [project.optional-dependencies]
 dataframe = ["pandas>=2"]
 parser = ["youtube-transcript-api>=1", "serpapi", "python-dotenv"]
+plots = ["matplotlib", "seaborn", "numpy"]
 
 [project.scripts]
 cefr = "cefr_analyzer.cli:main"

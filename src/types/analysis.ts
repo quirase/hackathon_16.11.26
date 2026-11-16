@@ -67,6 +67,10 @@ export interface SavedWordItem {
   savedAt: string;
 }
 
+export interface AnalysisPlots {
+  jointSvg?: string | null;
+}
+
 export interface VideoAnalysisResult {
   id: string;
   videoId: string;
@@ -86,6 +90,7 @@ export interface VideoAnalysisResult {
   grammarPatterns: GrammarPattern[];
   flaggedPhrases: FlaggedPhrase[];
   transcriptExcerpt: TranscriptToken[];
+  plots?: AnalysisPlots | null;
   isMock?: boolean;
 }
 

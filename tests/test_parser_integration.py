@@ -131,3 +131,9 @@ class ProviderAdapterTests(unittest.TestCase):
         for url in ("https://example.org/?v=dQw4w9WgXcQ", "https://youtube.com.evil.org/watch?v=dQw4w9WgXcQ", "https://youtu.be/dQw4w9WgXcQextra"):
             with self.assertRaises(ValueError):
                 parser.get_video_id(url)
+
+    def test_youtube_error_surfaced_when_serpapi_not_configured(self):
+        with patch.object(parser, "get_segments_from_youtube", side_effect=RuntimeError("IpBlocked")), \
+             patch.object(parser, "SERPAPI_KEYS", []):
+            with self.assertRaisesRegex(RuntimeError, "youtube-transcript-api failed: IpBlocked"):
+                parser.get_transcript("dQw4w9WgXcQ")

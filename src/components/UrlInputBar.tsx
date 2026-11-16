@@ -1,13 +1,15 @@
-import { AlertCircle, ArrowRight, Link2, X } from 'lucide-react';
+import { AlertCircle, ArrowRight, LayoutGrid, Link2, X } from 'lucide-react';
 import type { FormEvent } from 'react';
 import { SAMPLE_PRESETS, type SamplePreset } from '../api/analyzer';
-import { CEFR_META } from '../utils/cefr';
+import type { CefrLevel } from '../types/analysis';
+import { CEFR_META, CEFR_ORDER } from '../utils/cefr';
 
 interface UrlInputBarProps {
   url: string;
   onUrlChange: (value: string) => void;
   onSubmit: () => void;
   onSelectPreset: (preset: SamplePreset) => void;
+  onOpenWall: (level: CefrLevel | 'ALL') => void;
   isLoading: boolean;
   error: string | null;
   hasResult: boolean;
@@ -18,6 +20,7 @@ export function UrlInputBar({
   onUrlChange,
   onSubmit,
   onSelectPreset,
+  onOpenWall,
   isLoading,
   error,
   hasResult,
@@ -78,29 +81,53 @@ export function UrlInputBar({
         </p>
       )}
 
-      <div className="presets-row">
-        <span className="presets-label">Try a sample:</span>
-        {SAMPLE_PRESETS.map((preset) => {
-          const meta = CEFR_META[preset.cefr];
-          return (
-            <button
-              key={preset.videoId}
-              type="button"
-              className="preset-chip"
-              onClick={() => onSelectPreset(preset)}
-              disabled={isLoading}
-            >
-              <span
-                className="preset-cefr"
-                style={{ color: meta.fg, backgroundColor: meta.bg }}
-              >
-                {preset.cefr}
-              </span>
-              <span>{preset.label}</span>
+      {!hasResult && (
+        <div style={{ marginTop: 18 }}>
+          <div className="presets-row">
+            <span className="presets-label">Know your level? Browse Wall:</span>
+            {CEFR_ORDER.map((lvl) => {
+              const meta = CEFR_META[lvl];
+              return (
+                <button
+                  key={lvl}
+                  type="button"
+                  className="preset-chip"
+                  onClick={() => onOpenWall(lvl)}
+                >
+                  <span className="preset-cefr" style={{ color: meta.fg, backgroundColor: meta.bg }}>
+                    {lvl}
+                  </span>
+                </button>
+              );
+            })}
+            <button type="button" className="preset-chip" onClick={() => onOpenWall('ALL')}>
+              <LayoutGrid size={12} strokeWidth={2} aria-hidden="true" />
+              <span>All Videos</span>
             </button>
-          );
-        })}
-      </div>
+          </div>
+
+          <div className="presets-row" style={{ marginTop: 10 }}>
+            <span className="presets-label">Try a sample:</span>
+            {SAMPLE_PRESETS.map((preset) => {
+              const meta = CEFR_META[preset.cefr];
+              return (
+                <button
+                  key={preset.videoId}
+                  type="button"
+                  className="preset-chip"
+                  onClick={() => onSelectPreset(preset)}
+                  disabled={isLoading}
+                >
+                  <span className="preset-cefr" style={{ color: meta.fg, backgroundColor: meta.bg }}>
+                    {preset.cefr}
+                  </span>
+                  <span>{preset.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -1,10 +1,11 @@
 import { Play } from 'lucide-react';
-import type { TimelineSegment, VocabDistributionItem } from '../types/analysis';
+import type { AnalysisPlots, TimelineSegment, VocabDistributionItem } from '../types/analysis';
 import { CEFR_META } from '../utils/cefr';
 
 interface DiagnosticsPlateProps {
   distribution: VocabDistributionItem[];
   timeline: TimelineSegment[];
+  plots?: AnalysisPlots | null;
   activeTimestampSec: number | null;
   onSeekTo: (seconds: number) => void;
 }
@@ -12,9 +13,57 @@ interface DiagnosticsPlateProps {
 export function DiagnosticsPlate({
   distribution,
   timeline,
+  plots,
   activeTimestampSec,
   onSeekTo,
 }: DiagnosticsPlateProps) {
+  if (plots?.jointSvg) {
+    return (
+      <section className="plate" aria-label="Speech pacing and CEFR lift map">
+        <div className="plate-header">
+          <h2 className="plate-title">Speech Pacing &amp; CEFR Lift Map</h2>
+          <span className="plate-meta">
+            Top: speech evenness · Center: words over time · Right: lift vs. 1.0x baseline
+          </span>
+        </div>
+
+        <div
+          style={{ width: '100%', overflowX: 'auto' }}
+          dangerouslySetInnerHTML={{ __html: plots.jointSvg }}
+        />
+
+        {timeline.length > 0 && (
+          <div className="presets-row" style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--rule-hairline)' }}>
+            <span className="presets-label">Jump to section:</span>
+            {timeline.map((seg) => {
+              const meta = CEFR_META[seg.level];
+              const isActive =
+                activeTimestampSec !== null &&
+                activeTimestampSec >= seg.startSec &&
+                activeTimestampSec < seg.endSec;
+              return (
+                <button
+                  key={seg.id}
+                  type="button"
+                  className="preset-chip"
+                  onClick={() => onSeekTo(seg.startSec)}
+                  style={isActive ? { borderColor: meta.fg, backgroundColor: meta.bg } : undefined}
+                  title={`${seg.startLabel}–${seg.endLabel}: ${seg.note}`}
+                >
+                  <span className="preset-cefr" style={{ color: meta.fg, backgroundColor: meta.bg }}>
+                    {seg.level}
+                  </span>
+                  <Play size={10} strokeWidth={2.4} fill="currentColor" aria-hidden="true" />
+                  <span className="tabular-nums">{seg.startLabel}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    );
+  }
+
   return (
     <section className="diagnostics-grid" aria-label="Lexical distribution and difficulty timeline">
       <div className="plate">
