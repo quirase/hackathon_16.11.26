@@ -14,7 +14,7 @@ export function HeroVerdict({ result }: HeroVerdictProps) {
 
   const handleCopyStudySheet = async () => {
     try {
-      const md = buildMarkdownStudySheet(result);
+      const md = await buildMarkdownStudySheet(result);
       await navigator.clipboard.writeText(md);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
