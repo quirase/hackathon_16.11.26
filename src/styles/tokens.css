@@ -1,0 +1,32 @@
+:root {
+  /* Crisp Editorial Studio Palette */
+  --bg-canvas: #F7F4EE;
+  --bg-plate: #FDFBF7;
+  --bg-subtle: #EFECE4;
+  --bg-hover: #EAE5DA;
+
+  --ink-primary: #171614;
+  --ink-secondary: #4D4943;
+  --ink-muted: #736D64;
+
+  --rule-hairline: #E0DBD0;
+  --rule-strong: #C5BEB0;
+
+  --accent-vermilion: #C83E2B;
+  --accent-vermilion-hover: #AE3221;
+  --accent-vermilion-soft: #FAEAE7;
+
+  /* Typography */
+  --font-editorial: 'Literata', Georgia, serif;
+  --font-ui: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Shadows & Radii */
+  --shadow-plate: 0 1px 2px rgba(23, 22, 20, 0.04), 0 8px 24px -12px rgba(23, 22, 20, 0.08);
+  --shadow-drawer: -12px 0 40px -12px rgba(23, 22, 20, 0.16);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
