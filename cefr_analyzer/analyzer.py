@@ -2,6 +2,7 @@
 
 from collections import Counter
 
+from .contract import SCHEMA_VERSION
 from .grammar import find_grammar
 from .lexicon import DATA, Lexicon
 from .levels import lowest
@@ -83,7 +84,7 @@ class Analyzer:
         if summary["eligible_lexical_units"] < 3:
             warnings.append("Insufficient reliable lexical evidence to assign a level.")
         counts = Counter(item["word"] for item in unknown)
-        return {"schema_version": "1.0", "assessment": summary,
+        return {"schema_version": SCHEMA_VERSION, "assessment": summary,
                 "statistics": {"tokens": len(tokens), "analyzed_tokens": word_count,
                                "sentences": len({token.sentence for token in tokens}),
                                "coverage": round(coverage, 4), "ignored_tokens": len(ignored),

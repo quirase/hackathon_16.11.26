@@ -1,0 +1,468 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "assessment": {
+      "$ref": "#/$defs/assessment"
+    },
+    "word_levels": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "A1",
+          "A2",
+          "B1",
+          "B2",
+          "C1",
+          "C2",
+          null
+        ]
+      }
+    },
+    "statistics": {
+      "$ref": "#/$defs/statistics"
+    },
+    "lexical_matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lexical"
+      }
+    },
+    "grammar_matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/grammar"
+      }
+    },
+    "unknown_words": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/unknown"
+      }
+    },
+    "unknown_occurrences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/occurrence"
+      }
+    },
+    "automatic_matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lexical"
+      }
+    },
+    "ignored": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/location"
+      }
+    },
+    "sources": {
+      "type": "object"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "assessment",
+    "word_levels",
+    "statistics",
+    "lexical_matches",
+    "grammar_matches",
+    "unknown_words",
+    "unknown_occurrences",
+    "automatic_matches",
+    "ignored",
+    "sources",
+    "warnings"
+  ],
+  "additionalProperties": true,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transcript CEFR result v1.0",
+  "$defs": {
+    "assessment": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "enum": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2",
+            null
+          ]
+        },
+        "score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 6
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium"
+          ]
+        },
+        "approximate": {
+          "const": true
+        },
+        "lexical_score": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "grammar_score": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "eligible_lexical_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "eligible_grammar_matches": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_lexical_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lexical_tails": {
+          "type": "object"
+        },
+        "grammar_tails": {
+          "type": "object"
+        },
+        "config": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "level",
+        "score",
+        "confidence",
+        "approximate",
+        "lexical_score",
+        "grammar_score",
+        "eligible_lexical_units",
+        "eligible_grammar_matches",
+        "content_lexical_units",
+        "lexical_tails",
+        "grammar_tails",
+        "config"
+      ],
+      "additionalProperties": true
+    },
+    "statistics": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "analyzed_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sentences": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "ignored_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "numeric_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lexical_distribution": {
+          "type": "object",
+          "properties": {
+            "A1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "A2": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "B1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "B2": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "C1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "C2": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2"
+          ],
+          "additionalProperties": true
+        },
+        "grammar_distribution": {
+          "type": "object",
+          "properties": {
+            "A1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "A2": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "B1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "B2": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "C1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "C2": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "tokens",
+        "analyzed_tokens",
+        "sentences",
+        "coverage",
+        "ignored_tokens",
+        "numeric_tokens",
+        "lexical_distribution",
+        "grammar_distribution"
+      ],
+      "additionalProperties": true
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "fragment": {
+          "type": "string"
+        },
+        "char_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "char_end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "token_indices": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1
+        },
+        "sentence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "time_codes": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": [
+        "fragment",
+        "char_start",
+        "char_end",
+        "token_indices",
+        "sentence",
+        "time_codes"
+      ],
+      "additionalProperties": true
+    },
+    "lexical": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/location"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "lemma": {
+              "type": "string"
+            },
+            "level": {
+              "enum": [
+                "A1",
+                "A2",
+                "B1",
+                "B2",
+                "C1",
+                "C2"
+              ]
+            },
+            "match": {
+              "type": "string"
+            },
+            "automatic": {
+              "type": "boolean"
+            },
+            "ambiguous": {
+              "type": "boolean"
+            },
+            "level_conflict": {
+              "type": "boolean"
+            },
+            "sources": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "lemma",
+            "level",
+            "match",
+            "automatic",
+            "ambiguous",
+            "level_conflict",
+            "sources"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "grammar": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/location"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "rule": {
+              "type": "string"
+            },
+            "level": {
+              "enum": [
+                "A1",
+                "A2",
+                "B1",
+                "B2",
+                "C1",
+                "C2",
+                null
+              ]
+            },
+            "ambiguous": {
+              "type": "boolean"
+            },
+            "sources": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "rule",
+            "level",
+            "ambiguous",
+            "sources"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "unknown": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "level": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "word",
+        "count",
+        "level"
+      ],
+      "additionalProperties": true
+    },
+    "occurrence": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/location"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "word": {
+              "type": "string"
+            },
+            "level": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "word",
+            "level"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    }
+  }
+}
