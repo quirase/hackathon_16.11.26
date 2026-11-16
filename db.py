@@ -3,7 +3,7 @@ import sqlite3
 
 table_name = "data"
 
-connection = sqlite3.connect("data.db")
+connection = sqlite3.connect("data.db", check_same_thread=False)
 cur = connection.cursor()
 
 cur.execute(f"""
