@@ -208,6 +208,22 @@ class AnalysisTests(unittest.TestCase):
         self.assertIsNone(result["assessment"]["level"])
         self.assertEqual(result["unknown_words"], [])
 
+    def test_word_levels_uses_surface_forms_and_unknown_null(self):
+        result = self.analyzer.analyze("Cats cats zqxvbling.")
+        self.assertEqual(result["word_levels"], {"cats": "A1", "zqxvbling": None})
+
+    def test_word_levels_keeps_phrase_components_together(self):
+        result = self.analyzer.analyze("She turned it down.")
+        self.assertEqual(result["word_levels"], {"she": "A1", "turned down": "B1", "it": "A1"})
+
+    def test_word_levels_excludes_ignored_words_and_numbers(self):
+        result = self.analyzer.analyze("John likes 42 cats.", ignore_terms=["John"])
+        self.assertNotIn("john", result["word_levels"])
+        self.assertNotIn("42", result["word_levels"])
+
+    def test_empty_word_levels(self):
+        self.assertEqual(self.analyzer.analyze("")["word_levels"], {})
+
     def test_default_excludes_automatic(self):
         automatic = next(term for term, entries in self.analyzer.lexicon.entries.items()
                          if " " not in term and all(item["automatic"] for item in entries)
@@ -297,6 +313,7 @@ class CliTests(unittest.TestCase):
         result = self.run_cli("analyze", "--text", "I like cats.", "--json")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("assessment", json.loads(result.stdout))
+        self.assertEqual(json.loads(result.stdout)["word_levels"]["cats"], "A1")
 
     def test_error_cli(self):
         result = self.run_cli("analyze", "--file", "missing-transcript-file.txt")

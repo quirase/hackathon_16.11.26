@@ -4,6 +4,7 @@ from collections import Counter
 
 from .grammar import find_grammar
 from .lexicon import DATA, Lexicon
+from .levels import lowest
 from .morphology import resolve
 from .phrases import find_phrases
 from .scoring import ScoringConfig, distribution, score
@@ -23,6 +24,17 @@ def ignored_indices(tokens, terms) -> set[int]:
             if [token.word for token in tokens[start:end]] == parts:
                 ignored.update(range(start, end))
     return ignored
+
+
+def build_word_levels(tokens, lexical, unknown) -> dict[str, str | None]:
+    """Map normalized surface words/phrase components to their lowest CEFR."""
+    levels = {}
+    for match in lexical:
+        word = " ".join(tokens[index].word for index in match["token_indices"])
+        levels[word] = lowest([levels.get(word), match["level"]])
+    for occurrence in unknown:
+        levels.setdefault(occurrence["word"], None)
+    return dict(sorted(levels.items()))
 
 
 class Analyzer:
@@ -78,6 +90,7 @@ class Analyzer:
                                "numeric_tokens": len(numbers), "lexical_distribution": distribution(lexical),
                                "grammar_distribution": distribution(grammar)},
                 "lexical_matches": lexical, "grammar_matches": grammar,
+                "word_levels": build_word_levels(tokens, lexical, unknown),
                 "unknown_words": [{"word": word, "count": count, "level": None} for word, count in sorted(counts.items())],
                 "unknown_occurrences": unknown,
                 "automatic_matches": [match for match in lexical if match["automatic"]],

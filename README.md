@@ -41,6 +41,7 @@ result = analyzer.analyze(
     ignore_terms=["John", "New York"],
 )
 print(result["assessment"]["level"])
+print(result["word_levels"])  # {"she": "A1", "turned down": "B1", "it": "A1"}
 print(result["unknown_words"])
 ```
 
