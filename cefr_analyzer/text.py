@@ -1,9 +1,10 @@
 """Tokenization, contraction expansion and strict word/timestamp alignment."""
 
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 
-WORD = re.compile(r"[A-Za-z]+(?:['’][A-Za-z]+)?|\d+(?:\.\d+)?")
+WORD = re.compile(r"[^\W\d_]+(?:['’][^\W\d_]+)?|\d+(?:\.\d+)?")
 BOUNDARY = re.compile(r"[.!?;:]")
 CONTRACTIONS = {
     "can't": ("can", "not"), "cannot": ("can", "not"),
@@ -61,13 +62,22 @@ def records_from(words) -> list[dict]:
         return []
     if hasattr(words, "to_dict"):
         return words.to_dict(orient="records")
+    if isinstance(words, Mapping):
+        if "word" not in words or "time_code" not in words:
+            raise ValueError("Column dictionary needs 'word' and 'time_code'.")
+        values, times = words["word"], words["time_code"]
+        if not isinstance(values, (list, tuple)) or not isinstance(times, (list, tuple)):
+            raise ValueError("Column dictionary values must be lists or tuples.")
+        if len(values) != len(times):
+            raise ValueError("word and time_code columns must have equal lengths.")
+        return [{"word": word, "time_code": time} for word, time in zip(values, times)]
     return list(words)
 
 
 def prepare(text: str | None, words=None) -> tuple[str, list[Token]]:
     records = records_from(words)
     for row in records:
-        if "word" not in row or "time_code" not in row or not isinstance(row["word"], str):
+        if not isinstance(row, Mapping) or "word" not in row or "time_code" not in row or not isinstance(row["word"], str):
             raise ValueError("Each row needs a string 'word' and a 'time_code'.")
     if text is None:
         text = " ".join(row["word"] for row in records)

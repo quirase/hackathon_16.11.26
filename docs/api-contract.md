@@ -32,7 +32,7 @@ result = analyzer.analyze(text="I like reading.", words=None, ignore_terms=())
 | Аргумент | Тип | Значення |
 |---|---|---|
 | `text` | `str \| None` | Англійська транскрипція |
-| `words` | `list[dict]`, pandas DataFrame або `None` | Рядки `word`, `time_code` |
+| `words` | `list[dict]`, pandas DataFrame, словник колонок або `None` | Рядки/колонки `word`, `time_code` |
 | `ignore_terms` | Послідовність рядків | Імена/назви, які треба явно виключити |
 
 Обов'язкові поля кожного рядка `words`:
@@ -42,6 +42,9 @@ result = analyzer.analyze(text="I like reading.", words=None, ignore_terms=())
 ```
 
 - `word` — рядок; додаткові колонки дозволені й ігноруються.
+- Словник колонок парсера `{"word": ["hello"], "time_code": [1.0]}`
+  приймається напряму. Обидві колонки мають бути списками/кортежами однакової
+  довжини; невідповідність викликає `ValueError`. Це сумісне розширення входу v1.0.
 - `time_code` — значення, яке зберігається без змін. Для JSON-обміну використовуйте
   рядок, скінченне число, `null`, список або об'єкт із JSON-сумісним вмістом.
   Python-об'єкти на кшталт `datetime` слід перетворити до виклику.

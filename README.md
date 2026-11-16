@@ -61,6 +61,7 @@ print(result["unknown_words"])
 - [Результати перевірки на 19 приблизно розмічених текстах](calibration_report.json)
 - [Аналіз нових синтетичних текстів](docs/synthetic-results.md)
 - [Приклад інтеграції з таймкодами](examples/integration.py)
+- [YouTube-парсер та наскрізна інтеграція](docs/parser-integration.md)
 
 Оновлення та розділення словників:
 

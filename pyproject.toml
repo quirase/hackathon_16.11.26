@@ -12,12 +12,16 @@ dependencies = []
 
 [project.optional-dependencies]
 dataframe = ["pandas>=2"]
+parser = ["youtube-transcript-api>=1", "serpapi", "python-dotenv"]
 
 [project.scripts]
 cefr = "cefr_analyzer.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["cefr_analyzer*"]
+
+[tool.setuptools]
+py-modules = ["transcript_parser"]
 
 [tool.setuptools.package-data]
 cefr_analyzer = ["data/*.json", "data/*.gz", "data/*.csv"]
