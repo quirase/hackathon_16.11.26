@@ -116,6 +116,10 @@ class AnalysisTests(unittest.TestCase):
         self.assertIn("go", resolve("went", self.analyzer.lexicon)["lemma_candidates"])
         self.assertIn("child", resolve("children", self.analyzer.lexicon)["lemma_candidates"])
 
+    def test_inflectional_family_is_not_ambiguous(self):
+        self.assertFalse(resolve("priorities", self.analyzer.lexicon)["ambiguous"])
+        self.assertTrue(resolve("axes", self.analyzer.lexicon)["ambiguous"])
+
     def test_unknown_not_inferred_from_ending(self):
         result = self.analyzer.analyze("I saw zqxvbling.")
         self.assertIn({"word": "zqxvbling", "count": 1, "level": None}, result["unknown_words"])
@@ -268,13 +272,23 @@ class ScoringTests(unittest.TestCase):
         self.assertEqual(result["level"], "A1")
 
     def test_automatic_opt_in(self):
-        words = [{"lemma": "hardword", "level": "C1", "automatic": True}] * 20
+        words = [{"lemma": lemma, "level": "C1", "automatic": True}
+                 for lemma in ("hardword", "anotherword", "thirdword")] * 7
         self.assertIsNone(score(words, [], 20, 1, ScoringConfig())["level"])
         self.assertEqual(score(words, [], 20, 1, ScoringConfig(include_automatic=True))["level"], "C1")
 
     def test_invalid_config(self):
         with self.assertRaises(ValueError):
             ScoringConfig(grammar_support=1)
+
+    def test_repeated_advanced_term_cannot_set_high_level(self):
+        words = self.lexical() + [{"lemma": "specialized", "level": "C2"}] * 10
+        self.assertLess(score(words, [], 110, 1, ScoringConfig())["lexical_score"], 4)
+
+    def test_diverse_b2_tail_is_recognized(self):
+        words = self.lexical() + [{"lemma": word, "level": "B2"}
+                                for word in ("consent", "conceal", "participation", "outcome", "omission", "transparent")]
+        self.assertEqual(score(words, [], 106, 1, ScoringConfig())["lexical_score"], 4)
 
 
 class ImportTests(unittest.TestCase):

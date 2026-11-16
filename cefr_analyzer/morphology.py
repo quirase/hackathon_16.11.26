@@ -50,7 +50,10 @@ def resolve(word: str, lexicon) -> dict | None:
     choices.sort(key=lambda entry: (number(entry["level"]), entry["automatic"], entry["match"] != "exact"))
     chosen = choices[0]
     alternatives = sorted({entry["lemma"] for entry in choices})
-    return {**chosen, "lemma_candidates": alternatives, "ambiguous": len(alternatives) > 1}
+    # A surface entry and its inflectional lemma are one lexical family:
+    # "priorities" + "priority" is not a genuine competing interpretation.
+    roots = {entry["lemma"] for entry in choices if entry["match"] != "exact"}
+    return {**chosen, "lemma_candidates": alternatives, "ambiguous": len(roots) > 1}
 
 
 def is_form(word: str, kind: str, lexicon) -> bool:

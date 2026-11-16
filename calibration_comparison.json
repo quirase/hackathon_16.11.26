@@ -1,0 +1,172 @@
+{
+  "before": {
+    "groups": {
+      "synthetic": {
+        "evaluated": 11,
+        "exact_matches": 4,
+        "mean_absolute_band_error": 1.091,
+        "within_one_band": 0.6363636363636364
+      },
+      "transcript": {
+        "evaluated": 8,
+        "exact_matches": 1,
+        "mean_absolute_band_error": 1.125,
+        "within_one_band": 0.75
+      }
+    },
+    "mean_absolute_band_error": 1.105,
+    "scoring_config": {
+      "lexical_support": 3,
+      "lexical_tail_share": 0.1,
+      "grammar_support": 3,
+      "grammar_full_density": 6.0,
+      "grammar_weight": 0.75,
+      "include_automatic": false
+    }
+  },
+  "after": {
+    "groups": {
+      "synthetic": {
+        "evaluated": 11,
+        "exact_matches": 5,
+        "mean_absolute_band_error": 0.727,
+        "within_one_band": 0.8181818181818182
+      },
+      "transcript": {
+        "evaluated": 8,
+        "exact_matches": 1,
+        "mean_absolute_band_error": 0.875,
+        "within_one_band": 1.0
+      }
+    },
+    "mean_absolute_band_error": 0.789,
+    "scoring_config": {
+      "lexical_support": 3,
+      "lexical_tail_share": 0.07,
+      "advanced_tail_share": 0.05,
+      "proficient_tail_share": 0.03,
+      "advanced_type_support": 3,
+      "grammar_support": 3,
+      "grammar_full_density": 6.0,
+      "grammar_weight": 0.75,
+      "include_automatic": false
+    }
+  },
+  "samples": [
+    {
+      "file": "A1_daily_life.txt",
+      "label": "A1",
+      "before": "A1",
+      "after": "A1"
+    },
+    {
+      "file": "A2_countryside.txt",
+      "label": "A2",
+      "before": "A2",
+      "after": "A2"
+    },
+    {
+      "file": "A2_memorable_journey.txt",
+      "label": "A2",
+      "before": "A2",
+      "after": "A2"
+    },
+    {
+      "file": "B1_cooking.txt",
+      "label": "B1",
+      "before": "A2",
+      "after": "A2"
+    },
+    {
+      "file": "B1_learning_guitar.txt",
+      "label": "B1",
+      "before": "B1",
+      "after": "B1"
+    },
+    {
+      "file": "B2_remote_work.txt",
+      "label": "B2",
+      "before": "B1",
+      "after": "B1"
+    },
+    {
+      "file": "B2_technology_balance.txt",
+      "label": "B2",
+      "before": "B1",
+      "after": "B2"
+    },
+    {
+      "file": "C1_changing_your_mind.txt",
+      "label": "C1",
+      "before": "B1",
+      "after": "B2"
+    },
+    {
+      "file": "C1_productivity.txt",
+      "label": "C1",
+      "before": "B1",
+      "after": "B2"
+    },
+    {
+      "file": "C2_community_decisions.txt",
+      "label": "C2",
+      "before": "B1",
+      "after": "B2"
+    },
+    {
+      "file": "C2_technology.txt",
+      "label": "C2",
+      "before": "B2",
+      "after": "B2"
+    },
+    {
+      "file": "erjMgola4fQ_A1.txt",
+      "label": "A1",
+      "before": "A2",
+      "after": "A2"
+    },
+    {
+      "file": "gOMypAhVaXE_A2.txt",
+      "label": "A2",
+      "before": "B1",
+      "after": "B1"
+    },
+    {
+      "file": "ME7CECwNks4_B1.txt",
+      "label": "B1",
+      "before": "B2",
+      "after": "B2"
+    },
+    {
+      "file": "OX-XEa50fFw_B2.txt",
+      "label": "B2",
+      "before": "A2",
+      "after": "B1"
+    },
+    {
+      "file": "ozi4FPic4QI_B2.txt",
+      "label": "B2",
+      "before": "B1",
+      "after": "B2"
+    },
+    {
+      "file": "tnvj7e1n5xk_B1.txt",
+      "label": "B1",
+      "before": "B1",
+      "after": "B2"
+    },
+    {
+      "file": "uVGV8LG3HHM_A1.txt",
+      "label": "A1",
+      "before": "A2",
+      "after": "A2"
+    },
+    {
+      "file": "V7bOxiNM3kc_C1.txt",
+      "label": "C1",
+      "before": "B1",
+      "after": "B2"
+    }
+  ],
+  "note": "Preliminary calibration on 19 approximate labels; no independent test-set accuracy claim."
+}

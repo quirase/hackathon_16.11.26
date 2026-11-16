@@ -19,7 +19,10 @@ through between before after while because until since during""".split())
 @dataclass(frozen=True)
 class ScoringConfig:
     lexical_support: int = 3
-    lexical_tail_share: float = 0.10
+    lexical_tail_share: float = 0.07
+    advanced_tail_share: float = 0.05
+    proficient_tail_share: float = 0.03
+    advanced_type_support: int = 3
     grammar_support: int = 3
     grammar_full_density: float = 6.0  # occurrences per 100 words
     grammar_weight: float = 0.75
@@ -32,6 +35,10 @@ class ScoringConfig:
             raise ValueError("Invalid prevalence thresholds")
         if not 0 <= self.grammar_weight <= 1:
             raise ValueError("grammar_weight must be in [0, 1]")
+        if not 0 < self.proficient_tail_share <= self.advanced_tail_share <= self.lexical_tail_share <= 1:
+            raise ValueError("Lexical shares must satisfy 0 < proficient <= advanced <= lexical <= 1")
+        if self.advanced_type_support < 2:
+            raise ValueError("advanced_type_support must be >= 2")
 
 
 def eligible(match, config):
@@ -48,10 +55,19 @@ def lexical_profile(content_words, config):
     lexical_score = 1.0
     lexical_tails = {}
     for level in LEVELS[1:]:
-        support = sum(number(match["level"]) >= number(level) for match in content_words)
+        evidence = [match for match in content_words if number(match["level"]) >= number(level)]
+        support = len(evidence)
+        types = len({match.get("lemma") for match in evidence})
         share = support / max(1, len(content_words))
-        lexical_tails[level] = {"count": support, "share": round(share, 4)}
-        if support >= config.lexical_support and share >= config.lexical_tail_share:
+        threshold = config.lexical_tail_share
+        if level == "B2":
+            threshold = config.advanced_tail_share
+        if level in {"C1", "C2"}:
+            threshold = config.proficient_tail_share
+        diverse = number(level) < 4 or types >= config.advanced_type_support
+        lexical_tails[level] = {"count": support, "share": round(share, 4),
+                                "types": types, "required_share": threshold}
+        if support >= config.lexical_support and share >= threshold and diverse:
             lexical_score = float(number(level))
     return lexical_score, lexical_tails
 
