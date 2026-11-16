@@ -57,7 +57,8 @@ print(result["unknown_words"])
 
 - [Документація: API, алгоритм, JSON і обмеження](docs/how-it-works.md)
 - [Джерела, схеми даних та ліцензійні примітки](docs/sources.md)
-- [Результати перевірки на 8 приблизно розмічених текстах](calibration_report.json)
+- [Результати перевірки на 19 приблизно розмічених текстах](calibration_report.json)
+- [Аналіз нових синтетичних текстів](docs/synthetic-results.md)
 - [Приклад інтеграції з таймкодами](examples/integration.py)
 
 Оновлення та розділення словників:

@@ -7,6 +7,8 @@ import unittest
 from pathlib import Path
 
 from cefr_analyzer import Analyzer, analyze
+from cefr_analyzer.calibration import filename_label
+from cefr_analyzer.word_groups import load_word_groups
 from cefr_analyzer.morphology import resolve
 from cefr_analyzer.scoring import ScoringConfig, score
 from cefr_analyzer.sources import import_gse, import_kaikki
@@ -303,6 +305,29 @@ class ImportTests(unittest.TestCase):
             import_kaikki(path, forms)
             self.assertEqual(forms["went"][0]["lemma"], "go")
             self.assertNotIn("fui", forms)
+
+
+class ConfigurationTests(unittest.TestCase):
+    def test_word_groups_are_immutable(self):
+        groups = load_word_groups()
+        self.assertIsInstance(groups["be"], frozenset)
+        self.assertIn("annoying", groups["adjectival"])
+
+    def test_invalid_word_group_is_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "groups.json"
+            path.write_text('{"be": ["IS"]}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "lowercase"):
+                load_word_groups(path)
+
+    def test_calibration_accepts_prefix_and_suffix(self):
+        self.assertEqual(filename_label("A2_memorable_journey"), "A2")
+        self.assertEqual(filename_label("video_B1"), "B1")
+        self.assertIsNone(filename_label("videos"))
+
+    def test_calibration_rejects_conflicting_labels(self):
+        with self.assertRaisesRegex(ValueError, "Conflicting"):
+            filename_label("A1_text_C2")
 
 
 class CliTests(unittest.TestCase):

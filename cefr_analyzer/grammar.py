@@ -6,18 +6,18 @@ Every chain is consumed once, including uncertain chains.
 
 from .morphology import is_form, candidates
 from .text import fragment
+from .word_groups import load_word_groups
 
-BE = {"am", "is", "are", "was", "were", "be", "been", "being"}
-HAVE = {"have", "has", "had"}
-MODALS = {"can", "could", "may", "might", "must", "shall", "should", "will", "would"}
-SKIP = {"not", "never", "already", "just", "still", "always", "really", "ever", "probably", "certainly", "also", "recently", "yet"}
-ADJECTIVAL = {"annoying", "disappointing", "exciting", "interesting", "boring", "surprising", "amazing", "confusing", "frightening", "tiring", "worrying", "pleasing", "satisfying"}
-ADJECTIVAL.update({"charming", "alarming", "astonishing", "appalling", "depressing", "disturbing",
-                   "embarrassing", "entertaining", "fascinating", "inspiring", "overwhelming",
-                   "relaxing", "shocking", "thrilling", "upsetting"})
-OBJECTS = {"me", "you", "him", "her", "it", "us", "them", "someone", "something", "everybody", "everyone"}
-DETERMINERS = {"the", "a", "an", "my", "your", "his", "her", "our", "their", "some"}
-CLAUSE_STOPS = {"and", "but", "or", "because", "if", "that", "when", "although", "while"}
+_WORDS = load_word_groups()
+BE = _WORDS["be"]
+HAVE = _WORDS["have"]
+MODALS = _WORDS["modals"]
+SKIP = _WORDS["skip"]
+ADJECTIVAL = _WORDS["adjectival"]
+OBJECTS = _WORDS["objects"]
+DETERMINERS = _WORDS["determiners"]
+CLAUSE_STOPS = _WORDS["clause_stops"]
+INVERSION = _WORDS["inversion"]
 
 
 def next_content(tokens, index: int, sentence: int) -> int:
@@ -210,10 +210,9 @@ def find_grammar(text, tokens, lexicon) -> list[dict]:
 
 def find_clause_patterns(text, tokens, lexicon) -> list[dict]:
     matches = []
-    inversion = {"never", "seldom", "rarely", "hardly", "scarcely"}
     for index, token in enumerate(tokens):
         first_in_sentence = index == 0 or tokens[index - 1].sentence != token.sentence
-        if first_in_sentence and token.word in inversion:
+        if first_in_sentence and token.word in INVERSION:
             end = index + 1
             if valid(tokens, end + 1, token.sentence) and tokens[end].word in HAVE | BE | MODALS | {"do", "does", "did"}:
                 matches.append(sourced_match(text, tokens, list(range(index, end + 2)), "negative_inversion", lexicon))
